@@ -1,29 +1,36 @@
-import React from 'react'
+"use client"
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
 import RemoveBtn from './RemoveBtn'
 import Link from 'next/link'
 import { HiPencilAlt } from "react-icons/hi"
 
 
-const getTopics = async () => {
-  try {
-    const res = await fetch("http://localhost:3000/api/topics", {
-      cache: 'no-store',
-    });
-    if (!res.ok) {
-      throw new Error("fail to fetch");
+function TopicsList() {
+  const router = useRouter();
 
+  const handleRemove = (id) => {
+    setTopics(topics.filter(topic => topic.id !== id));
+  };
+
+  const [topics, setTopics] = useState([]);
+  useEffect(() => {
+    async function getTopics() {
+      try {
+        const res = await fetch("http://localhost:3000/api/topics", {
+          cache: "no-store"
+        });
+        if (!res.ok) {
+          throw new Error("fail to fetch");
+        }
+        const data = await res.json();
+        setTopics(data.topics);
+      } catch (error) {
+        console.log("Error loading the data:", error);
+      }
     }
-    return res.json()
-  } catch (error) {
-    console.log("Error loading the data:", error);
-
-  }
-
-}
-
-
-async function TopicsList() {
-  const { topics } = await getTopics();
+    getTopics();
+  }, [router.asPath])
   return (
     <>
       {topics.map(topic => (
@@ -34,7 +41,7 @@ async function TopicsList() {
             <div>{topic.description}</div>
           </div>
           <div className='flex gap-2'>
-            <RemoveBtn id={topic._id} />
+            <RemoveBtn id={topic._id} onRemove={handleRemove} />
             <Link href={`/editTopic/${topic._id}`}>
               <HiPencilAlt size={24} />
             </Link>
