@@ -22,8 +22,8 @@ const handleSubmit= async(e) =>{
     if(!res.ok){
       throw new Error("failed to update");
     }
-    router.refresh();
     router.push('/');
+    router.refresh();
   } catch (error) {
     console.log(error);
   }

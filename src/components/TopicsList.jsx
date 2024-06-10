@@ -26,20 +26,19 @@ async function TopicsList() {
   const { topics } = await getTopics();
   return (
     <>
-      {topics.map(t => (
-        <div className='p-4 border border-amber-400 flex justify-between  my-3 gap-5 items-start'>
+      {topics.map(topic => (
+        <div key={topic._id}
+          className='p-4 border border-amber-400 flex justify-between  my-3 gap-5 items-start'>
           <div>
-            <h2 className='font-bold  text-2xl'>{t.title}</h2>
-            <div>{t.description}</div>
+            <h2 className='font-bold  text-2xl'>{topic.title}</h2>
+            <div>{topic.description}</div>
           </div>
           <div className='flex gap-2'>
-            <RemoveBtn id = {t._id} />
-            <Link href={`/editTopic/${t._id}`}>
+            <RemoveBtn id={topic._id} />
+            <Link href={`/editTopic/${topic._id}`}>
               <HiPencilAlt size={24} />
             </Link>
-
           </div>
-
         </div>
       ))}
     </>
