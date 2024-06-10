@@ -4,9 +4,7 @@ import React from 'react'
 
 const getTopicsById = async(id) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/topics/${id}`,{
-      cache: "no-store",
-    });
+    const res = await fetch(`http://localhost:3000/api/topics/${id}`);
 
     if(!res.ok){
       throw new Error("failed to fetch topic");
